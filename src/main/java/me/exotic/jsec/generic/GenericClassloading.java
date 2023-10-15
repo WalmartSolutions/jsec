@@ -23,7 +23,8 @@ import java.security.ProtectionDomain;
  */
 public class GenericClassloading implements Opcodes {
 
-    public static void main(String[] args) throws Throwable {
+    @Runnable
+    public static void run() throws Throwable {
         System.out.println(ManagementFactory.getRuntimeMXBean().getInputArguments());
         new GenericClassloading().defineUsingCustomClassLoader();
     }
