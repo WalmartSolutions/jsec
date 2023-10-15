@@ -1,4 +1,4 @@
-# Java Security (JSec)
+# Java Security Techniques  (JSec)
 
 Welcome to JSec, a documentation on Java security techniques employed by various software, aimed at showcasing both the do's and don'ts. The motives behind this documentation are to shed light on the intricacies of these techniques, demonstrating how they work and, importantly, how to defend against them.
 
