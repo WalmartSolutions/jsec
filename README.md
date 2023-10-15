@@ -7,5 +7,5 @@ Anything can be reverse engineered or "cracked" within a certain time period, no
 The point of security is to slow the attacker down and annoy them as much as possible in the process hoping they will quit.
 <br><br>
 I have explained what to do and what to not do here but there will always be better solutions. <br>
-Harder to reverse engineer software will come out and new ways on exploiting java will be found. <br>
+Harder to reverse engineer software will come out and new ways on exploiting Java will be found. <br>
 This is a brief explanation on the latest ones I have encountered.
