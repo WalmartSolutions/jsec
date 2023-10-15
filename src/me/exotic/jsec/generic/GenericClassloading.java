@@ -11,6 +11,12 @@ import java.lang.reflect.Field;
  * If you find anything wrong with it, open an issue.
  */
 public class GenericClassloading {
+    /*
+    A little disclaimer: this can be hooked so don't use it.
+    The best approach in my opinion of loading classes is using JVMTI.
+    Learning about JVMTI is out of the range of JSec.
+     */
+    
     /**
      Showcases how classloading looks using {@link sun.misc.Unsafe}
      */
