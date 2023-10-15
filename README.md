@@ -1,34 +1,31 @@
-<h1 align="center">jsec</h1>
-Documentary of Java security techniques employed by some software I have seen that I found interesting. <br>
-Motives behind this we're to showcase what you shouldn't and should do.
-<br><br>
-It's just meant to showcase how many of these techniques work and how to defeat them. <br>
-Anything can be reverse engineered or "cracked" within a certain time period, nothing is impenetrable. <br>
-The point of security is to slow the attacker down and annoy them as much as possible in the process hoping they will quit.
-<br><br>
-I have explained what to do and what to not do here but there will always be better solutions. <br>
-Harder to reverse engineer software will come out and new ways on exploiting Java will be found. <br>
-This is a brief explanation on the latest ones I have encountered.
-<br><br>
-Please understand that reverse engineering and cracking are two different things. <br>
-I do not condone cracking or in some cases reverse engineering. <br>
-I am not your lawyer, and I am not responsible for what you do with the information provided by jsec.
+# Java Security (JSec)
 
-# Contribution
-If you are thinking about contributing then here are the requirements. <br>
-- Proper grammar.
-- Contributions have to be well documented (if they are to the project itself).
+Welcome to JSec, a documentation on Java security techniques employed by various software, aimed at showcasing both the do's and don'ts. The motives behind this documentation are to shed light on the intricacies of these techniques, demonstrating how they work and, importantly, how to defend against them.
 
-Here is the explanation of each requirement. <br>
-<h3>Proper grammar</h3>
-No one wants to see your bad grammar if you struggle with it use software to help you. <br>
-It makes the source not as trustable and overall isn't a good look. <br>
-If you happen to make a mistake or a few it doesn't really matter just don't mess up too much.
+## Introduction
 
-<h3>Documentation</h3>
-Learn how to use basic javadoc features, you don't need to be a master just don't make it ugly.
+It's essential to recognize that nothing is impenetrable; however, the goal of security is to create hurdles for attackers, slowing them down and making the process as annoying as possible in the hope that they'll abandon their attempts or wont be able to crack the software due to their lack of knowledge.
 
-# Issues
-If you happen to find incorrect information or maybe something that isn't explained well then that is what the issues page is for. <br>
-There is no format for issues just make your issue easy to understand and don't complain about "dumb stuff".
+## Key Points
 
+- This document explains what to do and what to avoid, recognizing that there will always be evolving solutions and challenges in the field of Java security.
+
+- Please understand the distinction between reverse engineering and cracking. The author does not condone cracking, and the information provided here is for educational purposes only.
+
+## Contribution Guidelines
+
+If you're interested in contributing, we welcome your input. However, we have a few requirements:
+
+### Proper Grammar
+
+Maintaining proper grammar is crucial for the credibility of the content. If you struggle with it, consider using software to help you. Occasional mistakes are acceptable, but strive for clarity.
+
+### Documentation
+
+Contribute well-documented changes, utilizing basic javadoc features. It doesn't require mastery, but it's important to keep the documentation clear and organized.
+
+## Issues
+
+If you come across incorrect information or find explanations unclear, please use the issues page to report them. There's no strict format for issues, but ensure your concern is easy to understand and pertinent.
+
+Feel free to enhance this documentation, ensuring it remains a valuable resource for understanding and improving Java security.
