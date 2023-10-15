@@ -2,7 +2,7 @@
 Documentary of java security techniques employed by some software I have seen that I found interesting. <br>
 Motives behind this we're to showcase what you shouldn't and should do.
 <br><br>
-It's just mean to showcase how many of these techniques work and how to defeat them. <br>
+It's just meant to showcase how many of these techniques work and how to defeat them. <br>
 Anything can be reverse engineered or "cracked" within a certain time period, nothing is impenetrable. <br>
 The point of security is to slow the attacker down and annoy them as much as possible in the process hoping they will quit.
 <br><br>
