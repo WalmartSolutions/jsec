@@ -1,5 +1,5 @@
 <h1 align="center">jsec</h1>
-Documentary of java security techniques employed by some software I have seen that I found interesting. <br>
+Documentary of Java security techniques employed by some software I have seen that I found interesting. <br>
 Motives behind this we're to showcase what you shouldn't and should do.
 <br><br>
 It's just meant to showcase how many of these techniques work and how to defeat them. <br>
