@@ -8,4 +8,5 @@ import java.lang.annotation.RetentionPolicy;
  * Used to identify runnable methods.
  */
 @Retention(RetentionPolicy.SOURCE)
-public @interface Runnable {}
+public @interface Runnable {
+}

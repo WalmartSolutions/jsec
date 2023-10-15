@@ -7,19 +7,19 @@ package me.exotic.jsec.breakdowns._3000IQPlay;
  */
 public class SimpleAuth {
 
-    /**
-     * Pulled from <a href="https://github.com/3000IQPlay/SimpleAuth/blob/main/src/main/java/dev/_3000IQPlay/simpleauth/protect/antivm/VMDetector.java"></a><br>
-     * The reason why I don't trust any of this is because it can all be bypassed by just hooking. <br>
-     * The best approach to client-side authentication in my opinion is using natives instead of java.
-     */
-    public static void vmChecking() {
-        /**
-         * {@link me.exotic.jsec.generic.GenericSysGets}
-         */
-        String os = System.getProperty("os.name").toLowerCase();
+	/**
+	 * Pulled from <a href="https://github.com/3000IQPlay/SimpleAuth/blob/main/src/main/java/dev/_3000IQPlay/simpleauth/protect/antivm/VMDetector.java"></a><br>
+	 * The reason why I don't trust any of this is because it can all be bypassed by just hooking. <br>
+	 * The best approach to client-side authentication in my opinion is using natives instead of java.
+	 */
+	public static void vmChecking() {
+		/**
+		 * {@link me.exotic.jsec.generic.GenericSysGets}
+		 */
+		String os = System.getProperty("os.name").toLowerCase();
 
-        if (os.contains("nux") || os.contains("win") || os.contains("mac")) {
-            // Hooking can be performed here as well.
+		if (os.contains("nux") || os.contains("win") || os.contains("mac")) {
+			// Hooking can be performed here as well.
 
             /*
             String cpuInfo = execute("cat /proc/cpuinfo");
@@ -29,7 +29,7 @@ public class SimpleAuth {
                 // VM :(
             }
              */
-        }
+		}
 
         /*
         There are of course more checks but the fact is that I made my point clear.
@@ -39,5 +39,5 @@ public class SimpleAuth {
         Of course natives can be broken as well but that's not the point, It's to annoy the attacker as much as possible.
         To essentially make them quit. (I have explained this before)
          */
-    }
+	}
 }
