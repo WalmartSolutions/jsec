@@ -15,10 +15,6 @@ import java.util.regex.Pattern;
 public class GenericLaunchArgs {
 	private static final Pattern badArgDetector = Pattern.compile("^-(javaagent|noverify|agentlib).+$");
 
-	public static void main(String[] args) {
-		launchArguments();
-	}
-
 	@Runnable
 	public static void launchArguments() {
         /*
