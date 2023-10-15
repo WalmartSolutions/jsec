@@ -9,6 +9,5 @@ package me.exotic.jsec;
 public class Main {
     public static void main(String[] args) {
         // Run only runnable methods here, they will be annotated with @Runnable.
-        // Exmaple: GenericExiting.exiting(0);
     }
 }

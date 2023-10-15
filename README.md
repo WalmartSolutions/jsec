@@ -29,3 +29,4 @@ Contribute well-documented changes, utilizing basic javadoc features. It doesn't
 If you come across incorrect information or find explanations unclear, please use the issues page to report them. There's no strict format for issues, but ensure your concern is easy to understand and pertinent.
 
 Feel free to enhance this documentation, ensuring it remains a valuable resource for understanding and improving Java security.
+

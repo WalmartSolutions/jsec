@@ -1,6 +1,6 @@
 package me.exotic.jsec.breakdowns.zzurio;
 
-import sun.management.VMManagement;
+
 
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
@@ -43,18 +43,13 @@ public class AntiDump {
      * Then we move on to the argument check.
      */
     public void argumentCheck() {
-        try {
-            /**
-             * Pulled from <a href="https://github.com/zzurio/Anti-Dump/blob/main/AntiDump.java"></a>
-             * Right off the bat we see usage of {@link sun.management.VMManagement} to get JVM arguments.
-             * Problem is the fact that this can be hooked just like {@link me.exotic.jsec.generic.GenericLaunchArgs}.
-             * After hooking it we bypassed the JVM argument checks and can now freely attach an agent.
-             */
-            Field jvmField = ManagementFactory.getRuntimeMXBean().getClass().getDeclaredField("jvm");
-            jvmField.setAccessible(true);
-            VMManagement jvm = (VMManagement) jvmField.get(ManagementFactory.getRuntimeMXBean());
-            List<String> inputArguments = jvm.getVmArguments();
-        } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+        /**
+         * Pulled from <a href="https://github.com/zzurio/Anti-Dump/blob/main/AntiDump.java"></a>
+         * Right off the bat we see usage of {@link sun.management.VMManagement} to get JVM arguments.
+         * Problem is the fact that this can be hooked just like {@link me.exotic.jsec.generic.GenericLaunchArgs}.
+         * After hooking it we bypassed the JVM argument checks and can now freely attach an agent.
+         */
+        List<String> inputArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
 
         /**
          * Pulled from <a href="https://github.com/zzurio/Anti-Dump/blob/main/AntiDump.java"></a>

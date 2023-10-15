@@ -60,11 +60,11 @@ public class GenericExiting {
         This is probably the best way of doing it as from what I believe there is no way to prevent it.
         The way this works is by throwing an exception that produces no stacktrace.
          */
-        throw new Exception();
+        throw new EmptyException();
     }
 
-    public static class Exception extends RuntimeException {
-        public Exception() {
+    public static class EmptyException extends RuntimeException {
+        public EmptyException() {
             setStackTrace(new StackTraceElement[0]);
         }
     }
