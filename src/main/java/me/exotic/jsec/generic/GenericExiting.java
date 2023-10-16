@@ -1,11 +1,14 @@
 package me.exotic.jsec.generic;
 
-import me.exotic.jsec.annotations.Runnable;
+import me.exotic.jsec.Util;
 import sun.misc.Unsafe;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * @author native
@@ -14,60 +17,56 @@ import java.lang.reflect.Method;
 
 public class GenericExiting {
 
-	@Runnable
-	public static void exiting(int code) {
-        /*
-        Applications that rely on the JVM to exit if the authentication fails are dumb, It's not the way it should be done.
-        One good idea would be to do server-side authentication and not rely on this, but I will showcase it anyway.
-         */
+	//	@Runnable
+	public static void exit(int code) throws Throwable {
+		// Relying on the JVM to exit if authentication fails is a very bad way of going about it.
+		// Instead, the client should only ever get to the required information to continue running if authentication succeeded.
+		// Authentication without a proper server will not work.
 
-        /*
-        First we attempt the conventional exiting methods that most people use, no explanation needed here.
-         */
+		// This is the most common way to exit a java application.
+		// Note: System.exit just calls Runtime.exit.
 		System.exit(code);
 		Runtime.getRuntime().exit(code);
 
-        /*
-        Next we try exiting with java.lang.Shutdown using reflection to load it.
-        For some more backstory, Shutdown is an internal class that by default cannot be used.
-        Many of the classes typically used to exit, use the Shutdown class, for example System->exit, Runtime->exit, etc.
-        Basically if you hook java.lang.Shutdown's exit() method you will prevent all of the above.
-         */
-		try {
-			Class<?> shutdown = Class.forName("java.lang.Shutdown");
+		// If we want to call Shutdown.exit(int) directly, we need reflection fuckshit.
+		// Shutdown is an internal class, behind Runtime.exit.
+		MethodHandles.Lookup lookup = Util.obtainAllMightyLookup();
+		Class<?> shutdownClass = lookup.findClass("java.lang.Shutdown");
+		MethodHandle exitMethod = lookup.findStatic(shutdownClass, "exit", MethodType.methodType(void.class, int.class));
 
-			Method exit = shutdown.getDeclaredMethod("exit", int.class);
-			exit.setAccessible(true);
+		exitMethod.invoke(code);
 
-			exit.invoke(null, code);
-		} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
-				 IllegalAccessException ignored) {
-		}
 
-        /*
-        This is only as an example, but you can prevent this as well (by hooking), it's just a little harder than the others.
-        The way this works is basically causing a complete segmentation fault in the JVM.
-        Remember the fact this still produces a "stacktrace" in the dump.
-         */
-		try {
-			Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-			theUnsafe.setAccessible(true);
+		// Crashing the JVM
+		// Using unsafe to access out of bounds memory will crash the JVM with a segfault.
+		// This normally can't be generally prevented, but it can be avoided by hooking Unsafe to ignore the call if the arguments are invalid like this.
+		// It also will produce a stacktrace and a LOT of debug information, in the form of a VM dump (hs_err_<number>.log)
+		// Generally not recommended
+		Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+		theUnsafe.setAccessible(true);
 
-			Unsafe unsafe = (Unsafe) theUnsafe.get(null);
-			unsafe.putAddress(0, 0);
-		} catch (NoSuchFieldException | IllegalAccessException ignored) {
-		}
+		Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+		unsafe.putAddress(0, 0);
 
-        /*
-        This is probably the best way of doing it as from what I believe there is no way to prevent it.
-        The way this works is by throwing an exception that produces no stacktrace.
-         */
+		// Assuming the attacker has no access to the direct bytecode of the method, throwing an exception is the best way to terminate the method
+		// This cannot be prevented unless you remove the athrow instruction completely (which the attacker cannot do in this case).
+		// Since it's a core part of the java language, exceptions can't just be ignored.
 		throw new EmptyException();
 	}
 
 	public static class EmptyException extends RuntimeException {
 		public EmptyException() {
 			setStackTrace(new StackTraceElement[0]);
+		}
+
+		@Override
+		public void printStackTrace(PrintStream s) {
+
+		}
+
+		@Override
+		public void printStackTrace(PrintWriter s) {
+
 		}
 	}
 }

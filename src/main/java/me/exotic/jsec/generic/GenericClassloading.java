@@ -10,7 +10,6 @@ import sun.misc.Unsafe;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -24,9 +23,8 @@ import java.security.ProtectionDomain;
 public class GenericClassloading implements Opcodes {
 
 	@Runnable
-    public static void run() throws Throwable {
-		System.out.println(ManagementFactory.getRuntimeMXBean().getInputArguments());
-		new GenericClassloading().defineUsingCustomClassLoader();
+	public static void run() throws Throwable {
+		new GenericClassloading().defineUsingJLA();
 	}
 
 	private static byte[] getExampleClass(String name) {
