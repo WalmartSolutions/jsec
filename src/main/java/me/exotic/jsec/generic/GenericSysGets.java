@@ -12,6 +12,7 @@ public class GenericSysGets {
 	public static void getProperty() {
         /*
         System->getProperty and System->getEnv methods can be hooked to return a favoured result.
+	You can find a full list of System properties valid for this method at https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html
         Prefer natives over this.
          */
 		String os = System.getProperty("os.name");
