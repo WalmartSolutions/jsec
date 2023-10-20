@@ -20,9 +20,19 @@ If you're interested in contributing, we welcome your input. However, we have a 
 
 Maintaining proper grammar is crucial for the credibility of the content. If you struggle with it, consider using software to help you. Occasional mistakes are acceptable, but strive for clarity.
 
-### Documentation
+## Documentation
 
-Contribute well-documented changes, utilizing basic javadoc features. It doesn't require mastery, but it's important to keep the documentation clear and organized.
+Contributing well-documented changes is crucial. Utilize basic javadoc features. It doesn't require mastery, but it's important to keep the documentation clear and organized.
+
+When creating documentation for JSec, it is important to strike the right balance between providing detailed information and ensuring ease of understanding. While we want the documentation to be comprehensive, we should avoid overwhelming the reader with excessive information.
+
+The primary goal of JSec is to facilitate learning for individuals who are interested in expanding their knowledge. Therefore, the documentation should be designed to make the learning process easier and more accessible.
+
+It is crucial to maintain the integrity and ethical standards of JSec. As such, the documentation should not serve as a tutorial on how to crack software. We should refrain from providing step-by-step instructions or guidance that could be misused for illegal activities.
+
+While we aim to provide valuable information and guidance, it is important to foster independent learning. The documentation should empower readers to explore and discover on their own, rather than holding their hand throughout the entire process.
+
+By adhering to these principles, we can ensure that JSec's documentation remains professional, informative, and conducive to effective learning.
 
 ## Issues
 
