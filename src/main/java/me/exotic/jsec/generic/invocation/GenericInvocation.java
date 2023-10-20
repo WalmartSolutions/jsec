@@ -6,6 +6,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * @author native
@@ -14,97 +15,89 @@ import java.lang.reflect.Method;
 
 public class GenericInvocation {
 
-    @Runnable
-    public static void run(InvocationType invocationType) {
-        if (invocationType.equals(InvocationType.REFLECTION))
-            reflection();
-        else methodHandles();
-    }
+	@Runnable
+	public static void run(InvocationType invocationType) {
+		if (invocationType.equals(InvocationType.REFLECTION))
+			reflection();
+		else methodHandles();
+	}
 
-    private static void reflection() {
-        System.out.println("Type -> reflection");
-        /*
-        The first way to invoke a method and the most common is to use reflection.
-        However, it's slow and there is a better way, but I will show how to do it anyway.
-         */
+	private static void reflection() {
+		System.out.println("Type -> reflection");
+		// Reflection is the classic way to reflectively access class members.
+		// It still has its uses, but for most cases, you'd probably want to use method handles instead
 
-        try {
-            /*
-            First we need to get the class where the method is.
-            */
-            Class<?> clazz = Class.forName("java.lang.System");
+		try {
+			// Invoking a method
 
-            /*
-            Next we can get the method from the class, as well as we need to pass in the parameters of the method.
-            In this case exit() takes in an int which is the exit code meaning we need to specify it.
-            For specifying others it's the same:
-            void.class
-            int.class
-            long.class
-             */
-            Method method = clazz.getDeclaredMethod("exit", int.class);
-            /*
-            And that's it we can now invoke the method.
-            You might notice I passed in two parameters even though exit() requires only one.
-            The reason for this is that reflection invocation needs an object where it's invoked from.
-            You don't need to specify it and can just set it as null.
-            The next parameter I pass in is our exit code.
-             */
-            method.invoke(null, 9);
-        } catch (Throwable ignored) {}
-    }
+			// This is the class where the method is **DEFINED**.
+			Class<?> clazz = System.class;
 
-    private static void methodHandles() {
-        System.out.println("Type -> handles");
-        /*
-        The next way is using MethodHandles.
-        This way is superior and faster this is mainly why you see many obfuscators use it.
-        However, it's a little harder to do than with reflection but is still pretty easy once you get it.
-         */
+			// Locating the method
+			// Assuming we want to call exit(int)
+			// getDeclaredMethod also gives us method references to protected and private methods. getMethod only returns methods that are public.
+			// We give getDeclaredMethod the method name and parameters, and get a method reference or a NoSuchMethodException
+			Method method = clazz.getDeclaredMethod("exit", int.class);
+			// If this code went through, we can now invoke the method
+			// The first argument of the .invoke method is the object to call this method on.
+			// This is redundant for static methods, and has to be null. For nonstatic methods, this has to be an object
+			//  which extends the class the method was defined on.
+			// Since exit is static, we can just pass in null.
+			method.invoke(null, 9);
+		} catch (Throwable ignored) {
+		}
+	}
 
-        try {
-            /*
-            First we need to define the class we get the method handle from.
-             */
-            Class<?> sysClass = Class.forName("java.lang.System");
+	private static void methodHandles() {
+		System.out.println("Type -> handles");
+		// Method handles are way more than just ways to invoke methods
+		// method handles are basically just programmable data sinks you can configure to go somewhere
+		// they're also faster than reflection
 
-            /*
-            Then we need to obtain a Lookup object to be able to find the method handle in the class.
-            Now you might notice that there are a few lookup methods in MethodHandles, the reason for this is mainly because of access.
-             */
+		try {
+			// Same procedure from before, we need the class where the method is DEFINED
+			Class<?> sysClass = System.class;
 
-            /*
-            Here is an example of how to get a Lookup object with the lookup() method.
-            This method is basically universal and isn't affected by access restrictions.
-            It's the most common way to do it.
-             */
-            MethodHandles.Lookup lookup = MethodHandles.lookup();
+			// Now, we need to obtain a lookup, to bind a method handle to an existing method or field
 
-            /*
-            The next way is using publicLookup() which IS affected by access restrictions.
-            As the name implies it gives us public access to the class.
-            Meaning we will only see methods that are public.
-             */
-            @SuppressWarnings("unused")
-            MethodHandles.Lookup pubLookup = MethodHandles.publicLookup();
+			// This is the most basic way to get a lookup. This will use this class as the owner of the lookup,
+			//  and allows us to access anything we can normally access from this class via method handles
+			MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-            /*
-            Next we need to get define a MethodType for the method we want to invoke.
-            The first parameter is well the method type, the next parameter is the method's parameters, which in this case is the exit code.
-             */
-            MethodType methodType = MethodType.methodType(void.class, int.class);
+			// A public lookup can only access public members, regardless where they are.
+			// Its owning class is Object
+			@SuppressWarnings("unused")
+			MethodHandles.Lookup pubLookup = MethodHandles.publicLookup();
 
-            /*
-            Now it's time to combine all of that together to find the method and then invoke it.
-            We pass in the class, the method name, and the method type.
-             */
-            MethodHandle handle = lookup.findStatic(sysClass, "exit", methodType);
+			// The MethodType of System.exit, it returns nothing (void) and accepts an int
+			MethodType methodType = MethodType.methodType(void.class, int.class);
 
-            /*
-            The invoking is similar to reflection but doesn't require an object meaning we can straight up pass in the params,
-             */
-            handle.invoke(9);
+			// Next, find the static method "exit" with the given type defined above
+			MethodHandle handle = lookup.findStatic(sysClass, "exit", methodType);
 
-        } catch (Throwable ignored) {}
-    }
+			// And finally, invoke it with our arguments
+			// Note that, in this case, we do not need to explicitly pass in "null" as instance
+			// static method handles do not have an instance argument.
+			handle.invoke(9);
+
+			// A quirk of method handles:
+			// If the method to be invoked has a varargs parameter (Type... args), the method handle will mimic that behavior.
+			// This means, building a method handle to abc(String a, String[] b) will produce a method handle that takes one string and one string array
+			//             building a method handle to abc(String a, String... b) will produce a method handle that takes between *one* and *infinite* strings
+			// To prevent this, you can map the vararg-capable method handle to a regular one which accepts a string array instead with .asFixedArity():
+			MethodHandle varargsHandle = MethodHandles.lookup()
+					.findStatic(Arrays.class, "toString", MethodType.methodType(String.class, Object[].class))
+					.asVarargsCollector(Object[].class);
+			String withVarargs = (String) varargsHandle.invoke("Hello", "world", "abcd");
+			String wrongWithVarargs = (String) varargsHandle.invoke((Object) new String[]{"Hello", "world", "abcd"});
+			String withoutVarargs = (String) varargsHandle.asFixedArity().invoke((Object) new String[]{"Hello", "world", "abcd"});
+			//@formatter:off
+            System.out.println(withVarargs); // [Hello, world, abcd]
+            System.out.println(wrongWithVarargs); // !!!  [[Ljava.lang.String;@77459877]
+                                                  // the String array got passed as element in the argument Object array
+            System.out.println(withoutVarargs); // [Hello, world, abcd]
+            //@formatter:on
+		} catch (Throwable ignored) {
+		}
+	}
 }
